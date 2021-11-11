@@ -1,0 +1,9 @@
+{
+    "db": {
+        "user": "dbocado",
+        "pwd": "dbocado",
+        "host": "localhost",
+        "port": "27017",
+        "name": "ocado"
+    }
+}
