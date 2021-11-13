@@ -5,6 +5,8 @@ const app = express();
 
 // connect to database
 require('./modules/database.js');
+// require('./models/staff.js')
+// require('./models/customer.js')
 
 // parse request bodies
 app.use(bodyParser.json());
@@ -23,7 +25,10 @@ app.all('*', function(req, res, next) {
     if (req.method == 'OPTIONS') res.send(200);
     else next();
 });
-  
+
+// add a uniform response handler
+const resextra = require('./modules/resextra.js');
+app.use(resextra);
 
 // require router
 const router = require('./routes/index.js');
