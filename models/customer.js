@@ -4,14 +4,7 @@ const Joi = require('joi');
 
 // set schema
 const customerSchema = new mongoose.Schema({
-    first_name: {
-        type: String,
-        required: true,
-        minLength: 2,
-        maxLength: 10,
-        trim: true
-    },
-    last_name: {
+    username: {
         type: String,
         required: true,
         minLength: 2,
@@ -74,12 +67,11 @@ async function createCustomer() {
     let salt = await bcrypt.genSalt(10);
     let pwd = await bcrypt.hash('123456', salt);
     Customer.create({
-        first_name: 'Rob',
-        last_name: 'Stark',
+        username: 'ivy',
         password: pwd,
-        email: 'rob@gmail.com',
-        post_code: 'CB3 1AA',
-        address: '12 Oxford Road',
+        email: 'ivy@gmail.com',
+        post_code: 'CB3 1AS',
+        address: '32 Oxford Road',
         town_city: 'Cambridge'
     });
 }

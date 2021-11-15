@@ -7,6 +7,14 @@ router.route('/slogin')
 router.route('/clogin')
     .post(require('./login/custm-login.js'));
 
+router.route('/staffs')
+    // get staffs list
+    .get(require('./users/get-staffs-list.js'));
+// add new staff
+
+router.route('/customers')
+    // get customers list
+    .get(require('./users/get-custms-list.js'));
 
 
 router.get('/test', require('./test.js'));
