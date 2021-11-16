@@ -237,3 +237,57 @@
     }
 }
 ```
+
+## 3.3. change user state
+
+- path: customers/:id/state/:state or staffs/:id/state/:state
+- method: put
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+| state      | required, value: 0/1          |
+
+- response data
+
+```json
+{
+    "data": {
+        "_id": "618e9ddf1b3c583d534fef73",
+        "role": "normal",
+        "state": 0,
+        "username": "rob",
+        "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
+        "email": "rob@gmail.com",
+        "post_code": "CB3 1AA",
+        "address": "12 Oxford Road",
+        "town_city": "Cambridge",
+        "create_time": "2021-11-12T17:01:19.706Z",
+        "cart": [],
+        "__v": 0
+    },
+    "meta": {
+        "msg": "change user state successfully",
+        "status": 200
+    }
+}
+```
+```json
+{
+    "data": {
+        "_id": "618dc0e5f6d992648273eb15",
+        "state": 0,
+        "username": "lily",
+        "password": "$2b$10$55HyOhTY6ryiCKhwW4ZjrOdXXLY0foVhU3kP9oThaKRWx9UCvTMri",
+        "email": "lily@gmail.com",
+        "role": "admin",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "__v": 0
+    },
+    "meta": {
+        "msg": "change user state successfully",
+        "status": 200
+    }
+}
+```
