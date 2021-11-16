@@ -77,6 +77,20 @@ async function createCustomer() {
 }
 // createCustomer();
 
+// this function will return an obj
+const validateCustm = (custm) => {
+    const schema = Joi.object({
+        username: Joi.string().trim().min(2).max(10).required(),
+        email: Joi.string().trim().email().required(),
+        password: Joi.string().trim().pattern(new RegExp('^[a-zA-Z0-9]{6,30}$')).required(),
+        post_code: Joi.string().trim().pattern(new RegExp(/^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/)).required(),
+        address: Joi.string().trim().required(),
+        town_city: Joi.string().trim().required()
+    });
+    return schema.validate(custm);
+};
+
 module.exports = {
-    Customer
+    Customer,
+    validateCustm
 };

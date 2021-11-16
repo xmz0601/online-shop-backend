@@ -9,12 +9,15 @@ router.route('/clogin')
 
 router.route('/staffs')
     // get staffs list
-    .get(require('./users/get-staffs-list.js'));
-// add new staff
+    .get(require('./users/get-staffs-list.js'))
+    // add new staff
+    .post(require('./users/add-staff.js'));
 
 router.route('/customers')
     // get customers list
-    .get(require('./users/get-custms-list.js'));
+    .get(require('./users/get-custms-list.js'))
+    // add customer
+    .post(require('./users/add-custm.js'));
 
 
 router.get('/test', require('./test.js'));
