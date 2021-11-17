@@ -4,14 +4,7 @@ const Joi = require('joi');
 
 // set schema
 const customerSchema = new mongoose.Schema({
-    first_name: {
-        type: String,
-        required: true,
-        minLength: 2,
-        maxLength: 10,
-        trim: true
-    },
-    last_name: {
+    username: {
         type: String,
         required: true,
         minLength: 2,
@@ -74,17 +67,41 @@ async function createCustomer() {
     let salt = await bcrypt.genSalt(10);
     let pwd = await bcrypt.hash('123456', salt);
     Customer.create({
-        first_name: 'Rob',
-        last_name: 'Stark',
+        username: 'ivy',
         password: pwd,
-        email: 'rob@gmail.com',
-        post_code: 'CB3 1AA',
-        address: '12 Oxford Road',
+        email: 'ivy@gmail.com',
+        post_code: 'CB3 1AS',
+        address: '32 Oxford Road',
         town_city: 'Cambridge'
     });
 }
 // createCustomer();
 
+// this function will return an obj
+const validateCustm = (custm) => {
+    const schema = Joi.object({
+        username: Joi.string().trim().min(2).max(10).required(),
+        email: Joi.string().trim().email().required(),
+        password: Joi.string().trim().pattern(new RegExp('^[a-zA-Z0-9]{6,30}$')).required(),
+        post_code: Joi.string().trim().pattern(new RegExp(/^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/)).required(),
+        address: Joi.string().trim().required(),
+        town_city: Joi.string().trim().required()
+    });
+    return schema.validate(custm);
+};
+
+const putCustmValidate = (custm) => {
+    const schema = Joi.object({
+        username: Joi.string().trim().min(2).max(10).required(),
+        post_code: Joi.string().trim().pattern(new RegExp(/^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/)).required(),
+        address: Joi.string().trim().required(),
+        town_city: Joi.string().trim().required()
+    });
+    return schema.validate(custm);
+};
+
 module.exports = {
-    Customer
+    Customer,
+    validateCustm,
+    putCustmValidate
 };

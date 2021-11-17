@@ -38,13 +38,13 @@
 
 ## 2.1. interface of login verification
 
-- URL: clogin or slogin
+- path: clogin or slogin
 - method: post
 - params:
 
-| params   |  notes  |
+| params   |  notes   |
 | -------- | -------- |
-| email | required |
+| email    | required |
 | password | required |
 
 - response data
@@ -55,8 +55,7 @@
         "_id": "618e9ddf1b3c583d534fef73",
         "role": "normal",
         "state": 1,
-        "first_name": "Rob",
-        "last_name": "Stark",
+        "username": "rob",
         "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
         "email": "rob@gmail.com",
         "post_code": "CB3 1AA",
@@ -68,7 +67,7 @@
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibm9ybWFsIiwiaWF0IjoxNjM2NzQyNTU3LCJleHAiOjE2MzY4Mjg5NTd9.5OVWzKnTVq7IVnEVCTx3kOX1M4QbhWywwAEHD4WdWVw"
     },
     "meta": {
-        "msg": "log in successfully",
+        "msg": "login successfully",
         "status": 200
     }
 }
@@ -88,6 +87,342 @@
     },
     "meta": {
         "msg": "login successfully",
+        "status": 200
+    }
+}
+```
+
+------
+
+# 3. user management
+
+## 3.1. user list
+
+- path: customers or staffs
+- method: get
+- params:
+
+| params   | illustrations     | notes        |
+| -------- | ----------------- | ------------ |
+| query    | key words         | not required |
+| pagenum  | current page      | required     |
+| pagesize | page size         | required     |
+
+- response params
+
+| params     | illustrations           |
+| ---------- | ----------------------- |
+| totalPages | total number of pages   |
+| totalCount | total number of users   |
+| pagenum    | current page            |
+| users      | array of users          |
+
+- response data
+
+```json
+{
+    "data": {
+        "pagenum": 1,
+        "totalCount": 11,
+        "totalPages": 3,
+        "users": [
+            {
+                "_id": "618e9ddf1b3c583d534fef73",
+                "role": "normal",
+                "state": 1,
+                "username": "rob",
+                "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
+                "email": "rob@gmail.com",
+                "post_code": "CB3 1AA",
+                "address": "12 Oxford Road",
+                "town_city": "Cambridge",
+                "create_time": "2021-11-12T17:01:19.706Z",
+                "cart": [],
+                "__v": 0
+            }
+        ]
+    },
+    "meta": {
+        "msg": "get users list successfully",
+        "status": 200
+    }
+}
+```
+```json
+{
+    "data": {
+        "pagenum": 1,
+        "totalCount": 11,
+        "totalPages": 3,
+        "users": [
+            {
+                "_id": "618dc0e5f6d992648273eb15",
+                "state": 1,
+                "username": "lily",
+                "password": "$2b$10$55HyOhTY6ryiCKhwW4ZjrOdXXLY0foVhU3kP9oThaKRWx9UCvTMri",
+                "email": "lily@gmail.com",
+                "role": "admin",
+                "create_time": "2021-11-12T01:18:29.253Z",
+                "__v": 0
+            }
+        ]
+    },
+    "meta": {
+        "msg": "get users list successfully",
+        "status": 200
+    }
+}
+```
+
+## 3.2. add user
+
+- path: customers or staffs
+- method: post
+- params:
+
+| params      | notes    |
+| ----------- | -------- |
+| username    | required |
+| email       | required |
+| password    | required |
+| post_code   | required |
+| address     | required |
+| town_city   | required |
+
+| params      | notes    |
+| ----------- | -------- |
+| username    | required |
+| email       | required |
+| password    | required |
+
+- response data
+
+```json
+{
+    "data": {
+        "_id": "618e9ddf1b3c583d534fef73",
+        "role": "normal",
+        "state": 1,
+        "username": "rob",
+        "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
+        "email": "rob@gmail.com",
+        "post_code": "CB3 1AA",
+        "address": "12 Oxford Road",
+        "town_city": "Cambridge",
+        "create_time": "2021-11-12T17:01:19.706Z",
+        "cart": [],
+        "__v": 0
+    },
+    "meta": {
+        "msg": "create user successfully",
+        "status": 201
+    }
+}
+```
+```json
+{
+    "data": {
+        "_id": "618dc0e5f6d992648273eb15",
+        "state": 1,
+        "username": "lily",
+        "password": "$2b$10$55HyOhTY6ryiCKhwW4ZjrOdXXLY0foVhU3kP9oThaKRWx9UCvTMri",
+        "email": "lily@gmail.com",
+        "role": "admin",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "__v": 0
+    },
+    "meta": {
+        "msg": "create user successfully",
+        "status": 201
+    }
+}
+```
+
+## 3.3. change user state
+
+- path: customers/:id/state/:state or staffs/:id/state/:state
+- method: put
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+| state      | required, value: 0/1          |
+
+- response data
+
+```json
+{
+    "data": {
+        "_id": "618e9ddf1b3c583d534fef73",
+        "role": "normal",
+        "state": 0,
+        "username": "rob",
+        "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
+        "email": "rob@gmail.com",
+        "post_code": "CB3 1AA",
+        "address": "12 Oxford Road",
+        "town_city": "Cambridge",
+        "create_time": "2021-11-12T17:01:19.706Z",
+        "cart": [],
+        "__v": 0
+    },
+    "meta": {
+        "msg": "change user state successfully",
+        "status": 200
+    }
+}
+```
+```json
+{
+    "data": {
+        "_id": "618dc0e5f6d992648273eb15",
+        "state": 0,
+        "username": "lily",
+        "password": "$2b$10$55HyOhTY6ryiCKhwW4ZjrOdXXLY0foVhU3kP9oThaKRWx9UCvTMri",
+        "email": "lily@gmail.com",
+        "role": "admin",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "__v": 0
+    },
+    "meta": {
+        "msg": "change user state successfully",
+        "status": 200
+    }
+}
+```
+
+## 3.4. query user by id
+
+- path: customers/:id or staffs/:id
+- method: get
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+
+- response data
+
+```json
+{
+    "data": {
+        "_id": "618e9ddf1b3c583d534fef73",
+        "role": "normal",
+        "state": 0,
+        "username": "rob",
+        "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
+        "email": "rob@gmail.com",
+        "post_code": "CB3 1AA",
+        "address": "12 Oxford Road",
+        "town_city": "Cambridge",
+        "create_time": "2021-11-12T17:01:19.706Z",
+        "cart": [],
+        "__v": 0
+    },
+    "meta": {
+        "msg": "query user successfully",
+        "status": 200
+    }
+}
+```
+```json
+{
+    "data": {
+        "_id": "618dc0e5f6d992648273eb15",
+        "state": 0,
+        "username": "lily",
+        "password": "$2b$10$55HyOhTY6ryiCKhwW4ZjrOdXXLY0foVhU3kP9oThaKRWx9UCvTMri",
+        "email": "lily@gmail.com",
+        "role": "admin",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "__v": 0
+    },
+    "meta": {
+        "msg": "query user successfully",
+        "status": 200
+    }
+}
+```
+
+## 3.5. update user
+
+- path: customers/:id or staffs/:id
+- method: put
+- params:
+
+| params           | notes                         |
+| ---------------- | ----------------------------- |
+| username         | required                      |
+| post_code        | required                      |
+| address          | required                      |
+| town_city        | required                      |
+
+| params           | notes                         |
+| ---------------- | ----------------------------- |
+| username         | required                      |
+| role             | required                      |
+
+- response data
+
+```json
+{
+    "data": {
+        "_id": "618e9ddf1b3c583d534fef73",
+        "role": "normal",
+        "state": 0,
+        "username": "rob123",
+        "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
+        "email": "rob@gmail.com",
+        "post_code": "CB3 1AA",
+        "address": "12 Oxford Road",
+        "town_city": "Cambridge",
+        "create_time": "2021-11-12T17:01:19.706Z",
+        "cart": [],
+        "__v": 0
+    },
+    "meta": {
+        "msg": "update user successfully",
+        "status": 200
+    }
+}
+```
+```json
+{
+    "data": {
+        "_id": "618dc0e5f6d992648273eb15",
+        "state": 0,
+        "username": "lily123",
+        "password": "$2b$10$55HyOhTY6ryiCKhwW4ZjrOdXXLY0foVhU3kP9oThaKRWx9UCvTMri",
+        "email": "lily@gmail.com",
+        "role": "admin",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "__v": 0
+    },
+    "meta": {
+        "msg": "update user successfully",
+        "status": 200
+    }
+}
+```
+
+## 3.6. delete user
+
+- path: customers/:id or staffs/:id
+- method: delete
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+
+- response data
+
+```json
+{
+    "data": null,
+    "meta": {
+        "msg": "delete user successfully",
         "status": 200
     }
 }

@@ -53,6 +53,26 @@ async function createStaff() {
 }
 // createStaff();
 
+// this function will return an obj
+const validateStaff = (staff) => {
+    const schema = Joi.object({
+        username: Joi.string().trim().min(2).max(10).required(),
+        email: Joi.string().trim().email().required(),
+        password: Joi.string().trim().pattern(new RegExp('^[a-zA-Z0-9]{6,30}$')).required()
+    });
+    return schema.validate(staff);
+};
+
+const putStaffValidate = (staff) => {
+    const schema = Joi.object({
+        username: Joi.string().trim().min(2).max(10).required(),
+        role: Joi.string().trim().min(1).max(10).required()
+    });
+    return schema.validate(staff);
+};
+
 module.exports = {
-    Staff
+    Staff,
+    validateStaff,
+    putStaffValidate
 };

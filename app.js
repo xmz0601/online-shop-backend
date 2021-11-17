@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // connect to database
-require('./modules/database.js');
-// require('./models/staff.js')
-// require('./models/customer.js')
+require('./modules/database');
+// require('./models/staff')
+// require('./models/customer')
 
 // parse request bodies
 app.use(bodyParser.json());
@@ -27,12 +27,14 @@ app.all('*', function(req, res, next) {
 });
 
 // add a uniform response handler
-const resextra = require('./modules/resextra.js');
+const resextra = require('./modules/resextra');
 app.use(resextra);
 
 // require router
-const router = require('./routes/index.js');
-app.use(router);
+app.use('/clogin', require('./routes/login/custm-login'));
+app.use('/slogin', require('./routes/login/staff-login'));
+app.use('/staffs', require('./routes/staffs'));
+app.use('/customers', require('./routes/customers'));
 
 
 app.listen(3000, () => {
