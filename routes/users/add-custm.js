@@ -3,7 +3,7 @@ const auth = require('../../modules/authorization.js');
 const addUser = require('../../modules/users/add-user.js');
 
 module.exports = (req, res) => {
-    auth(req, res, ['admin']);
+    auth(req, res, ['normal']);
 
     // varify params
     const { error } = validateCustm(req.body);

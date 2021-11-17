@@ -3,7 +3,7 @@ const auth = require('../../modules/authorization.js');
 const editUser = require('../../modules/users/edit-user.js');
 
 module.exports = (req, res) => {
-    auth(req, res, ['admin']);
+    auth(req, res, ['admin', 'normal']);
 
     // varify params
     const { error } = putCustmValidate(req.body);
