@@ -405,3 +405,25 @@
     }
 }
 ```
+
+## 3.6. delete user
+
+- path: customers/:id or staffs/:id
+- method: delete
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+
+- response data
+
+```json
+{
+    "data": null,
+    "meta": {
+        "msg": "delete user successfully",
+        "status": 200
+    }
+}
+```

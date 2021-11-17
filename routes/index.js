@@ -29,12 +29,13 @@ router.route('/customers/:id/state/:state')
 
 router.route('/staffs/:id')
     .get(require('./users/query-staff.js'))
-    .put(require('./users/edit-staff.js'));
+    .put(require('./users/edit-staff.js'))
+    .delete(require('./users/delete-staff.js'));
 
 router.route('/customers/:id')
     .get(require('./users/query-custm.js'))
-    .put(require('./users/edit-custm.js'));
-
+    .put(require('./users/edit-custm.js'))
+    .delete(require('./users/delete-custm.js'));
 
 
 router.get('/test', require('./test.js'));
