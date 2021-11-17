@@ -1,6 +1,11 @@
-const { Customer } = require('../../models/customer.js');
-const loginVerify = require('../../modules/login-verify.js')
+const express = require('express');
+const { Customer } = require('../../models/customer');
+const loginVerify = require('../../modules/login-verify');
 
-module.exports = async(req, res) => {
+const router = express.Router();
+
+router.post('/', (req, res) => {
     loginVerify(req, res, Customer);
-};
+});
+
+module.exports = router;
