@@ -28,10 +28,12 @@ router.route('/customers/:id/state/:state')
     .put(require('./users/change-custm-state.js'));
 
 router.route('/staffs/:id')
-    .get(require('./users/query-staff.js'));
+    .get(require('./users/query-staff.js'))
+    .put(require('./users/edit-staff.js'));
 
 router.route('/customers/:id')
-    .get(require('./users/query-custm.js'));
+    .get(require('./users/query-custm.js'))
+    .put(require('./users/edit-custm.js'));
 
 
 

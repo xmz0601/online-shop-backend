@@ -63,7 +63,16 @@ const validateStaff = (staff) => {
     return schema.validate(staff);
 };
 
+const putStaffValidate = (staff) => {
+    const schema = Joi.object({
+        username: Joi.string().trim().min(2).max(10).required(),
+        role: Joi.string().trim().min(1).max(10).required()
+    });
+    return schema.validate(staff);
+};
+
 module.exports = {
     Staff,
-    validateStaff
+    validateStaff,
+    putStaffValidate
 };
