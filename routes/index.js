@@ -27,6 +27,13 @@ router.route('/customers/:id/state/:state')
     // change state of customer
     .put(require('./users/change-custm-state.js'));
 
+router.route('/staffs/:id')
+    .get(require('./users/query-staff.js'));
+
+router.route('/customers/:id')
+    .get(require('./users/query-custm.js'));
+
+
 
 router.get('/test', require('./test.js'));
 
