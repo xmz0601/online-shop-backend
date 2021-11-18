@@ -47,7 +47,7 @@
 | email    | required |
 | password | required |
 
-- response data
+- response data:
 
 ```json
 {
@@ -108,7 +108,7 @@
 | pagenum  | current page      | required     |
 | pagesize | page size         | required     |
 
-- response params
+- response params:
 
 | params     | illustrations           |
 | ---------- | ----------------------- |
@@ -117,7 +117,7 @@
 | pagenum    | current page            |
 | users      | array of users          |
 
-- response data
+- response data:
 
 ```json
 {
@@ -195,7 +195,7 @@
 | email       | required |
 | password    | required |
 
-- response data
+- response data:
 
 ```json
 {
@@ -249,7 +249,7 @@
 | id         | required                      |
 | state      | required, value: 0/1          |
 
-- response data
+- response data:
 
 ```json
 {
@@ -302,7 +302,7 @@
 | ---------- | ----------------------------- |
 | id         | required                      |
 
-- response data
+- response data:
 
 ```json
 {
@@ -363,7 +363,7 @@
 | username         | required                      |
 | role             | required                      |
 
-- response data
+- response data:
 
 ```json
 {
@@ -416,7 +416,7 @@
 | ---------- | ----------------------------- |
 | id         | required                      |
 
-- response data
+- response data:
 
 ```json
 {
@@ -427,3 +427,38 @@
     }
 }
 ```
+
+------
+
+# 4. power management
+
+## 4.1. menu list
+
+- path: menus
+- method: get
+
+- response data:
+
+```json
+{
+    "data": [
+        {
+            "id": 100,
+            "authName": "User Management",
+            "path": "users",
+            "children": [{
+                    "id": 101,
+                    "authName": "Staff List",
+                    "path": "staffs",
+                    "children": []
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "msg": "get menu list successfully",
+        "status": 200
+    }
+}
+```
+

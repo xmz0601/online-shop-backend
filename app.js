@@ -35,6 +35,7 @@ app.use('/clogin', require('./routes/login/custm-login'));
 app.use('/slogin', require('./routes/login/staff-login'));
 app.use('/staffs', require('./routes/staffs'));
 app.use('/customers', require('./routes/customers'));
+app.use('/menus', require('./routes/menus'));
 
 
 app.listen(3000, () => {
