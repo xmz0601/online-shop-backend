@@ -48,6 +48,40 @@ router.route('/')
         resultData.cates = cates;
 
         res.sendResult(resultData, 200, 'get category list successfully');
+    })
+    .post(async(req, res) => {
+        auth(req, res, ['admin']);
+
+        let cate_pid = req.body.cate_pid + '';
+        let cate_name = req.body.cate_name;
+        let cate_level = req.body.cate_level + '';
+        // varify params
+        if (!cate_pid.trim()) return res.sendResult(null, 400, 'cate_pid is required');
+        if (!cate_name.trim()) return res.sendResult(null, 400, 'cate_name is required');
+        if (!cate_level.trim()) return res.sendResult(null, 400, 'cate_level is required');
+        if (cate_level != '0' && cate_level != '1' && cate_level != '2') return res.sendResult(null, 400, 'wrong param: cate_level');
+
+        // verify cate_pid
+        if (cate_level == '0') {
+            // cate_pid must be 0
+            if (cate_pid != '0') return res.sendResult(null, 400, 'wrong param: cate_pid');
+            let resultData = await Category.create(req.body);
+            res.sendResult(resultData, 201, 'create category successfully');
+        } else if (cate_level == '1') {
+            // cate_pid must be tier 1 category's _id
+            Category.findOne({ cate_level: 0, _id: cate_pid }, async function(err, result) {
+                if (err || !result) return res.sendResult(null, 400, 'this pid does not exist');
+                let resultData = await Category.create(req.body);
+                res.sendResult(resultData, 201, 'create category successfully');
+            });
+        } else {
+            // cate_pid must be tier 2 category's _id
+            Category.findOne({ cate_level: 1, _id: cate_pid }, async function(err, result) {
+                if (err || !result) return res.sendResult(null, 400, 'this pid does not exist');
+                let resultData = await Category.create(req.body);
+                res.sendResult(resultData, 201, 'create category successfully');
+            });
+        }
     });
 
 

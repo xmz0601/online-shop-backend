@@ -529,3 +529,33 @@
     }
 }
 ```
+
+## 5.2. add category
+
+- path: categories
+- method: post
+- params:
+
+| params      | notes                                                           |
+| ----------- | --------------------------------------------------------------- |
+| cate_pid    | required; the value should be 0 if a tier 1 category is added   |
+| cate_name   | required                                                        |
+| cate_level  | required; 0/1/2 means tier 1/2/3 category                       |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "61967cd89ef90810b61838e4",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "cate_level": 0,
+        "cate_name": "Bakery",
+        "cate_pid": "0",
+    },
+    "meta": {
+        "msg": "add new category successfully",
+        "status": 201
+    }
+}
+```
