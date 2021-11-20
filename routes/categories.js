@@ -85,5 +85,15 @@ router.route('/')
     });
 
 
+router.route('/:id')
+    .get((req, res) => {
+        let { id } = req.params;
+        Category.findOne({ _id: id }, async function(err, result) {
+            if (err || !result) return res.sendResult(null, 400, 'this id does not exist');
+            res.sendResult(result, 200, 'query category successfully');
+        });
+    });
+
+
 
 module.exports = router;

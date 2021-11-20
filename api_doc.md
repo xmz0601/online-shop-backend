@@ -559,3 +559,31 @@
     }
 }
 ```
+
+## 5.3. query category by id
+
+- path: categories/:id
+- method: get
+- params:
+
+| params      | notes                                 |
+| ----------- | ------------------------------------- |
+| id          | required                              |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "61967cd89ef90810b61838e4",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "cate_level": 0,
+        "cate_name": "Bakery",
+        "cate_pid": "0",
+    },
+    "meta": {
+        "msg": "query category successfully",
+        "status": 200
+    }
+}
+```
