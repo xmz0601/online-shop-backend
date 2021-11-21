@@ -92,6 +92,20 @@ router.route('/:id')
             if (err || !result) return res.sendResult(null, 400, 'this id does not exist');
             res.sendResult(result, 200, 'query category successfully');
         });
+    })
+    .put((req, res) => {
+        auth(req, res, ['admin']);
+        let id = req.params.id;
+        // varify params
+        if (!req.body.cate_name.trim()) return res.sendResult(null, 400, 'cate_name is required');
+        // check if this id exists
+        Category.findOne({ _id: id }, async function(err, result) {
+            if (err || !result) return res.sendResult(null, 400, 'this id does not exist');
+            // update
+            await Category.updateOne({ _id: id }, { cate_name: req.body.cate_name });
+            let newCate = await Category.findOne({ _id: id });
+            res.sendResult(newCate, 200, 'update category successfully');
+        });
     });
 
 

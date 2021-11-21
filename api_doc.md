@@ -587,3 +587,32 @@
     }
 }
 ```
+
+## 5.4. edit category
+
+- path: categories/:id
+- method: put
+- params:
+
+| params      | notes                                   |
+| ----------- | --------------------------------------- |
+| id          | required                                |
+| cate_name   | required; add this param in req.body    |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "61967cd89ef90810b61838e4",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "cate_level": 0,
+        "cate_name": "Bakery123",
+        "cate_pid": "0",
+    },
+    "meta": {
+        "msg": "update category successfully",
+        "status": 200
+    }
+}
+```
