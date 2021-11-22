@@ -106,6 +106,28 @@ router.route('/:id')
             let newCate = await Category.findOne({ _id: id });
             res.sendResult(newCate, 200, 'update category successfully');
         });
+    })
+    .delete((req, res) => {
+        auth(req, res, ['admin']);
+        let { id } = req.params;
+        Category.findOne({ _id: id }, async function(err, result) {
+            if (err || !result) return res.sendResult(null, 400, 'this id does not exist');
+            // delete
+            let level = result.cate_level;
+            let childCate = [];
+            await Category.deleteOne({ _id: id });
+            if (level < 2) {
+                // level: 0/1, which means the deleted category has child or grandchild category
+                childCate = await Category.find({ cate_pid: id });
+                await Category.deleteMany({ cate_pid: id });
+            }
+            if (level < 1) {
+                for (let i = 0; i < childCate.length; i++) {
+                    await Category.deleteMany({ cate_pid: childCate[i]._id });
+                }
+            }
+            res.sendResult(null, 200, 'delete category successfully');
+        });
     });
 
 

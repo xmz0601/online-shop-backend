@@ -594,10 +594,10 @@
 - method: put
 - params:
 
-| params      | notes                                   |
-| ----------- | --------------------------------------- |
-| id          | required                                |
-| cate_name   | required; add this param in req.body    |
+| params      | notes                                       |
+| ----------- | ------------------------------------------- |
+| id          | required                                    |
+| cate_name   | required; add this param in request body    |
 
 - response data:
 
@@ -612,6 +612,28 @@
     },
     "meta": {
         "msg": "update category successfully",
+        "status": 200
+    }
+}
+```
+
+## 5.5. delete category
+
+- path: categories/:id
+- method: delete
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+
+- response data:
+
+```json
+{
+    "data": null,
+    "meta": {
+        "msg": "delete category successfully",
         "status": 200
     }
 }
