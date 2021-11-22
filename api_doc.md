@@ -462,3 +462,179 @@
 }
 ```
 
+------
+
+# 5. category management
+
+## 5.1. category list
+
+- path: categories
+- method: get
+- params:
+
+| params   | illustrations     | notes                                 |
+| -------- | ----------------- | ------------------------------------- |
+| level    | 1/2/3             | 1/2/3 means get tier 1/2/3 categories; if this param is missing, then a default value 3 will be added                                          |
+| pagenum  | current page      | required                              |
+| pagesize | page size         | required                              |
+
+- response params:
+
+| params     | illustrations                |
+| ---------- | ---------------------------- |
+| totalPages | total number of pages        |
+| totalCount | total number of categories   |
+| pagenum    | current page                 |
+| cates      | array of categories          |
+
+- response data:
+
+```json
+{
+    "data": {
+        "pagenum": 1,
+        "totalCount": 6,
+        "totalPages": 2,
+        "cates": [
+            {
+                "_id": "61967cd89ef90810b61838e4",
+                "create_time": "2021-11-12T01:18:29.253Z",
+                "cate_level": 0,
+                "cate_name": "Bakery",
+                "cate_pid": "0",
+                "children": [
+                    {
+                        "_id": "619684a30c9b531b1b48ff6f",
+                        "create_time": "2021-11-12T01:18:29.253Z",
+                        "cate_level": 1,
+                        "cate_name": "Bread",
+                        "cate_pid": "61967cd89ef90810b61838e4",
+                        "children": [
+                            {
+                                "_id": "619699c3d5ad803817d4b6b4",
+                                "create_time": "2021-11-12T01:18:29.253Z",
+                                "cate_level": 2,
+                                "cate_name": "White Bread",
+                                "cate_pid": "619684a30c9b531b1b48ff6f",
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "meta": {
+        "msg": "get category list successfully",
+        "status": 200
+    }
+}
+```
+
+## 5.2. add category
+
+- path: categories
+- method: post
+- params:
+
+| params      | notes                                                           |
+| ----------- | --------------------------------------------------------------- |
+| cate_pid    | required; the value should be 0 if a tier 1 category is added   |
+| cate_name   | required                                                        |
+| cate_level  | required; 0/1/2 means tier 1/2/3 category                       |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "61967cd89ef90810b61838e4",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "cate_level": 0,
+        "cate_name": "Bakery",
+        "cate_pid": "0",
+    },
+    "meta": {
+        "msg": "add new category successfully",
+        "status": 201
+    }
+}
+```
+
+## 5.3. query category by id
+
+- path: categories/:id
+- method: get
+- params:
+
+| params      | notes                                 |
+| ----------- | ------------------------------------- |
+| id          | required                              |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "61967cd89ef90810b61838e4",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "cate_level": 0,
+        "cate_name": "Bakery",
+        "cate_pid": "0",
+    },
+    "meta": {
+        "msg": "query category successfully",
+        "status": 200
+    }
+}
+```
+
+## 5.4. edit category
+
+- path: categories/:id
+- method: put
+- params:
+
+| params      | notes                                       |
+| ----------- | ------------------------------------------- |
+| id          | required                                    |
+| cate_name   | required; add this param in request body    |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "61967cd89ef90810b61838e4",
+        "create_time": "2021-11-12T01:18:29.253Z",
+        "cate_level": 0,
+        "cate_name": "Bakery123",
+        "cate_pid": "0",
+    },
+    "meta": {
+        "msg": "update category successfully",
+        "status": 200
+    }
+}
+```
+
+## 5.5. delete category
+
+- path: categories/:id
+- method: delete
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+
+- response data:
+
+```json
+{
+    "data": null,
+    "meta": {
+        "msg": "delete category successfully",
+        "status": 200
+    }
+}
+```

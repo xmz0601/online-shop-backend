@@ -5,8 +5,9 @@ const app = express();
 
 // connect to database
 require('./modules/database');
-// require('./models/staff')
-// require('./models/customer')
+// require('./models/staff');
+// require('./models/customer');
+// require('./models/category');
 
 // parse request bodies
 app.use(bodyParser.json());
@@ -36,6 +37,7 @@ app.use('/slogin', require('./routes/login/staff-login'));
 app.use('/staffs', require('./routes/staffs'));
 app.use('/customers', require('./routes/customers'));
 app.use('/menus', require('./routes/menus'));
+app.use('/categories', require('./routes/categories'));
 
 
 app.listen(3000, () => {
