@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 
@@ -27,6 +28,9 @@ app.all('*', function(req, res, next) {
     else next();
 });
 
+// manage static resources
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // add a uniform response handler
 const resextra = require('./modules/resextra');
 app.use(resextra);
@@ -38,6 +42,7 @@ app.use('/staffs', require('./routes/staffs'));
 app.use('/customers', require('./routes/customers'));
 app.use('/menus', require('./routes/menus'));
 app.use('/categories', require('./routes/categories'));
+app.use('/upload', require('./routes/upload'));
 
 
 app.listen(3000, () => {

@@ -638,3 +638,27 @@
     }
 }
 ```
+
+------
+
+# 6. upload files
+
+## 6.1. upload picture
+
+- path: upload
+- method: post
+
+- response data:
+
+```json
+{
+    "data": {
+        "img_path": "/uploads/320342a02ab7cb5c247979a01.jpeg",
+        "url": "http://127.0.0.1:3000/uploads/320342a02ab7cb5c247979a01.jpeg"
+    },
+    "meta": {
+        "msg": "upload picture successfully",
+        "status": 200
+    }
+}
+```
