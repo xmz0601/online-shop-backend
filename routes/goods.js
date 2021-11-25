@@ -100,6 +100,16 @@ router.route('/:id')
             let newGoods = await Good.findOne({ _id: id });
             res.sendResult(newGoods, 200, 'update goods successfully');
         });
+    })
+    .delete((req, res) => {
+        auth(req, res, ['admin']);
+        let { id } = req.params;
+        Good.findOne({ _id: id }, async function(err, result) {
+            if (err || !result) return res.sendResult(null, 400, 'this id does not exist');
+            // delete
+            await Good.deleteOne({ _id: id });
+            res.sendResult(null, 200, 'delete goods successfully');
+        });
     });
 
 

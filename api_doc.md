@@ -840,3 +840,25 @@
     }
 }
 ```
+
+## 7.5. delete goods
+
+- path: goods/:id
+- method: delete
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+
+- response data:
+
+```json
+{
+    "data": null,
+    "meta": {
+        "msg": "delete goods successfully",
+        "status": 200
+    }
+}
+```
