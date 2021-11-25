@@ -1,5 +1,5 @@
 const express = require('express');
-const { Good, validateGoods } = require('../models/good');
+const { Good, validateGoods, putGoodsValidate } = require('../models/good');
 const { Category } = require('../models/category');
 const auth = require('../modules/authorization');
 
@@ -83,6 +83,22 @@ router.route('/:id')
         Good.findOne({ _id: id }, async function(err, result) {
             if (err || !result) return res.sendResult(null, 400, 'this id does not exist');
             res.sendResult(result, 200, 'query goods successfully');
+        });
+    })
+    .put((req, res) => {
+        auth(req, res, ['admin']);
+        // verify params
+        const { error } = putGoodsValidate(req.body);
+        if (error) return res.sendResult(null, 400, error.message);
+        let { id } = req.params;
+        let bodyParams = req.body;
+        // check if this id exists
+        Good.findOne({ _id: id }, async function(err, result) {
+            if (err || !result) return res.sendResult(null, 400, 'this id does not exist');
+            // update
+            await Good.updateOne({ _id: id }, bodyParams);
+            let newGoods = await Good.findOne({ _id: id });
+            res.sendResult(newGoods, 200, 'update goods successfully');
         });
     });
 

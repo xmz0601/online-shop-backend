@@ -89,8 +89,22 @@ const validateGoods = (goods) => {
     return schema.validate(goods);
 };
 
+const putGoodsValidate = (goods) => {
+    const schema = Joi.object({
+        name: Joi.string().trim().required(),
+        weight: Joi.number().positive().required(),
+        price: Joi.number().positive().required(),
+        pic: Joi.string().trim().allow(null, ''),
+        description: Joi.string().trim().allow(null, ''),
+        ingredients: Joi.string().trim().allow(null, ''),
+        storage: Joi.string().trim().allow(null, '')
+    });
+    return schema.validate(goods);
+};
+
 
 module.exports = {
     Good,
-    validateGoods
+    validateGoods,
+    putGoodsValidate
 };
