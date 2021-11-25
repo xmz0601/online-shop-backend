@@ -719,3 +719,47 @@
     }
 }
 ```
+
+## 7.2. add goods
+
+- path: goods
+- method: post
+- params:
+
+| params          | notes                                   |
+| --------------- | --------------------------------------- |
+| name            | string, required                        |
+| weight          | number, required                        |
+| price           | number, required                        |
+| cate_one_id     | id of tier 1 category, string, required |
+| cate_two_id     | id of tier 2 category, string, required |
+| cate_three_id   | id of tier 3 category, string, required |
+| pic             | path of image, string, not required     |
+| description     | string, not required                    |
+| ingredients     | string, not required                    |
+| storage         | string, not required                    |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "619d747c2cfb9341e39d0d3e",
+        "name": "Kellogg's Crunchy Nut Corn Flakes",
+        "cate_one_id": "61967cbf8414d8108c52ba32",
+        "cate_two_id": "619683d96cb3b619e476b8b4",
+        "cate_three_id": "619694214b23b13042de1105",
+        "create_time": "2021-11-23T23:08:44.215Z",
+        "price": 3,
+        "weight": 500,
+        "storage": "",
+        "description": "",
+        "ingredients": "",
+        "pic": "/uploads/320342a02ab7cb5c247979a01.jpeg"
+    },
+    "meta": {
+        "msg": "create goods successfully",
+        "status": 201
+    }
+}
+```

@@ -1,5 +1,6 @@
 const express = require('express');
-const { Good } = require('../models/good');
+const { Good, validateGoods } = require('../models/good');
+const { Category } = require('../models/category');
 const auth = require('../modules/authorization');
 
 const router = express.Router();
@@ -39,6 +40,40 @@ router.route('/')
         resultData.pagenum = pagenum;
         resultData.goods = goods;
         res.sendResult(resultData, 200, 'get goods list successfully');
+    })
+    .post((req, res) => {
+        auth(req, res, ['admin']);
+        // verify params
+        const { error } = validateGoods(req.body);
+        if (error) return res.sendResult(null, 400, error.message);
+
+        // check if cate_id is valid
+        Category.findOne({
+            cate_level: 0,
+            _id: req.body.cate_one_id.trim()
+        }, function(err, result) {
+            if (err || !result) return res.sendResult(null, 400, 'cate_one_id does not exist');
+
+            Category.findOne({
+                cate_level: 1,
+                _id: req.body.cate_two_id.trim(),
+                cate_pid: req.body.cate_one_id.trim()
+            }, function(err, result) {
+                if (err || !result) return res.sendResult(null, 400, 'cate_two_id does not exist');
+
+                Category.findOne({
+                    cate_level: 2,
+                    _id: req.body.cate_three_id.trim(),
+                    cate_pid: req.body.cate_two_id.trim()
+                }, async function(err, result) {
+                    if (err || !result) return res.sendResult(null, 400, 'cate_three_id does not exist');
+
+                    // add to db
+                    let resultData = await Good.create(req.body);
+                    res.sendResult(resultData, 201, 'create goods successfully');
+                });
+            });
+        });
     });
 
 

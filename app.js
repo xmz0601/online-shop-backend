@@ -9,7 +9,7 @@ require('./modules/database');
 // require('./models/staff');
 // require('./models/customer');
 // require('./models/category');
-require('./models/good');
+// require('./models/good');
 
 // parse request bodies
 app.use(bodyParser.json());

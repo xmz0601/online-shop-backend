@@ -73,6 +73,24 @@ function createGood() {
 }
 // createGood();
 
+const validateGoods = (goods) => {
+    const schema = Joi.object({
+        name: Joi.string().trim().required(),
+        weight: Joi.number().positive().required(),
+        price: Joi.number().positive().required(),
+        cate_one_id: Joi.string().trim().required(),
+        cate_two_id: Joi.string().trim().required(),
+        cate_three_id: Joi.string().trim().required(),
+        pic: Joi.string().trim().allow(null, ''),
+        description: Joi.string().trim().allow(null, ''),
+        ingredients: Joi.string().trim().allow(null, ''),
+        storage: Joi.string().trim().allow(null, '')
+    });
+    return schema.validate(goods);
+};
+
+
 module.exports = {
-    Good
+    Good,
+    validateGoods
 };
