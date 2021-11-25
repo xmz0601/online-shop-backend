@@ -763,3 +763,39 @@
     }
 }
 ```
+
+## 7.3. query goods by id
+
+- path: goods/:id
+- method: get
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "619d747c2cfb9341e39d0d3e",
+        "name": "Kellogg's Crunchy Nut Corn Flakes",
+        "cate_one_id": "61967cbf8414d8108c52ba32",
+        "cate_two_id": "619683d96cb3b619e476b8b4",
+        "cate_three_id": "619694214b23b13042de1105",
+        "create_time": "2021-11-23T23:08:44.215Z",
+        "price": 3,
+        "weight": 500,
+        "storage": "",
+        "description": "",
+        "ingredients": "",
+        "pic": "/uploads/320342a02ab7cb5c247979a01.jpeg"
+    },
+    "meta": {
+        "msg": "query goods successfully",
+        "status": 200
+    }
+}
+```
+
