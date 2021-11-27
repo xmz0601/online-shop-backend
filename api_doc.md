@@ -588,7 +588,7 @@
 }
 ```
 
-## 5.4. edit category
+## 5.4. update category
 
 - path: categories/:id
 - method: put
@@ -658,6 +658,207 @@
     },
     "meta": {
         "msg": "upload picture successfully",
+        "status": 200
+    }
+}
+```
+
+------
+
+# 7. goods management
+
+## 7.1. goods list
+
+- path: goods
+- method: get
+- params:
+
+| params   | illustrations     | notes        |
+| -------- | ----------------- | ------------ |
+| query    | key words         | not required |
+| cid      | id of category    | not required |
+| pagenum  | current page      | required     |
+| pagesize | page size         | required     |
+
+- response params:
+
+| params     | illustrations           |
+| ---------- | ----------------------- |
+| totalPages | total number of pages   |
+| totalCount | total number of goods   |
+| pagenum    | current page            |
+| goods      | array of goods          |
+
+- response data:
+
+```json
+{
+    "data": {
+        "pagenum": 1,
+        "totalCount": 10,
+        "totalPages": 2,
+        "goods": [
+            {
+                "_id": "619d747c2cfb9341e39d0d3e",
+                "name": "Kellogg's Crunchy Nut Corn Flakes",
+                "cate_one_id": "61967cbf8414d8108c52ba32",
+                "cate_two_id": "619683d96cb3b619e476b8b4",
+                "cate_three_id": "619694214b23b13042de1105",
+                "create_time": "2021-11-23T23:08:44.215Z",
+                "price": 3,
+                "weight": 500,
+                "storage": "",
+                "description": "",
+                "ingredients": "",
+                "pic": "/uploads/320342a02ab7cb5c247979a01.jpeg"
+            }
+        ]
+    },
+    "meta": {
+        "msg": "get goods list successfully",
+        "status": 200
+    }
+}
+```
+
+## 7.2. add goods
+
+- path: goods
+- method: post
+- params:
+
+| params          | notes                                   |
+| --------------- | --------------------------------------- |
+| name            | string, required                        |
+| weight          | number, required                        |
+| price           | number, required                        |
+| cate_one_id     | id of tier 1 category, string, required |
+| cate_two_id     | id of tier 2 category, string, required |
+| cate_three_id   | id of tier 3 category, string, required |
+| pic             | path of image, string, not required     |
+| description     | string, not required                    |
+| ingredients     | string, not required                    |
+| storage         | string, not required                    |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "619d747c2cfb9341e39d0d3e",
+        "name": "Kellogg's Crunchy Nut Corn Flakes",
+        "cate_one_id": "61967cbf8414d8108c52ba32",
+        "cate_two_id": "619683d96cb3b619e476b8b4",
+        "cate_three_id": "619694214b23b13042de1105",
+        "create_time": "2021-11-23T23:08:44.215Z",
+        "price": 3,
+        "weight": 500,
+        "storage": "",
+        "description": "",
+        "ingredients": "",
+        "pic": "/uploads/320342a02ab7cb5c247979a01.jpeg"
+    },
+    "meta": {
+        "msg": "create goods successfully",
+        "status": 201
+    }
+}
+```
+
+## 7.3. query goods by id
+
+- path: goods/:id
+- method: get
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "619d747c2cfb9341e39d0d3e",
+        "name": "Kellogg's Crunchy Nut Corn Flakes",
+        "cate_one_id": "61967cbf8414d8108c52ba32",
+        "cate_two_id": "619683d96cb3b619e476b8b4",
+        "cate_three_id": "619694214b23b13042de1105",
+        "create_time": "2021-11-23T23:08:44.215Z",
+        "price": 3,
+        "weight": 500,
+        "storage": "",
+        "description": "",
+        "ingredients": "",
+        "pic": "/uploads/320342a02ab7cb5c247979a01.jpeg"
+    },
+    "meta": {
+        "msg": "query goods successfully",
+        "status": 200
+    }
+}
+```
+
+## 7.4. update goods
+
+- path: goods/:id
+- method: put
+- params:
+
+| params          | notes                                   |
+| --------------- | --------------------------------------- |
+| id              | required                                |
+| name            | string, required                        |
+| weight          | number, required                        |
+| price           | number, required                        |
+| pic             | path of image, string, not required     |
+| description     | string, not required                    |
+| ingredients     | string, not required                    |
+| storage         | string, not required                    |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "619d747c2cfb9341e39d0d3e",
+        "name": "Kellogg's Crunchy Nut Corn Flakes",
+        "cate_one_id": "61967cbf8414d8108c52ba32",
+        "cate_two_id": "619683d96cb3b619e476b8b4",
+        "cate_three_id": "619694214b23b13042de1105",
+        "create_time": "2021-11-23T23:08:44.215Z",
+        "price": 3,
+        "weight": 500,
+        "storage": "",
+        "description": "",
+        "ingredients": "",
+        "pic": "/uploads/320342a02ab7cb5c247979a01.jpeg"
+    },
+    "meta": {
+        "msg": "update goods successfully",
+        "status": 200
+    }
+}
+```
+
+## 7.5. delete goods
+
+- path: goods/:id
+- method: delete
+- params:
+
+| params     | notes                         |
+| ---------- | ----------------------------- |
+| id         | required                      |
+
+- response data:
+
+```json
+{
+    "data": null,
+    "meta": {
+        "msg": "delete goods successfully",
         "status": 200
     }
 }

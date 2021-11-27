@@ -9,6 +9,7 @@ require('./modules/database');
 // require('./models/staff');
 // require('./models/customer');
 // require('./models/category');
+// require('./models/good');
 
 // parse request bodies
 app.use(bodyParser.json());
@@ -23,7 +24,7 @@ app.all('*', function(req, res, next) {
     res.setHeader('Content-Type', 'application/json;charset=utf-8')
     res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
     res.header('X-Powered-By', ' 3.2.1');
-    // 让options请求快速返回
+    // let options requests return quickly
     if (req.method == 'OPTIONS') res.send(200);
     else next();
 });
@@ -43,6 +44,7 @@ app.use('/customers', require('./routes/customers'));
 app.use('/menus', require('./routes/menus'));
 app.use('/categories', require('./routes/categories'));
 app.use('/upload', require('./routes/upload'));
+app.use('/goods', require('./routes/goods'));
 
 
 app.listen(3000, () => {
