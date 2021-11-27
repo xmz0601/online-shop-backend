@@ -8,38 +8,60 @@ const router = express.Router();
 router.route('/')
     // get goods list
     .get(async(req, res) => {
+        let { pagenum, pagesize, cid } = req.query;
         // verify params
-        if (!req.query.pagenum || req.query.pagenum <= 0) return res.sendResult(null, 400, "wrong param: pagenum");
-        if (!req.query.pagesize || req.query.pagesize <= 0) return res.sendResult(null, 400, "wrong param: pagesize");
+        if (!pagenum || pagenum <= 0) return res.sendResult(null, 400, "wrong param: pagenum");
+        if (!pagesize || pagesize <= 0) return res.sendResult(null, 400, "wrong param: pagesize");
 
-        let pagenum = parseInt(req.query.pagenum);
-        let pagesize = parseInt(req.query.pagesize);
-        let totalCount = await Good.countDocuments({});
-        let totalPages = Math.ceil(totalCount / pagesize);
+        pagenum = parseInt(pagenum);
+        pagesize = parseInt(pagesize);
         let skipCount = (pagenum - 1) * pagesize;
-
+        let totalCount = 0;
         let goods = [];
-        let key = req.query.query.trim();
-        if (!key) {
-            goods = await Good.find({}).limit(pagesize).skip(skipCount);
-        } else {
-            let keyArr = key.split(/\s+/);
-            let regExp = '^';
-            keyArr.forEach(el => {
-                regExp += '(?=.*' + el + ')';
-            });
-            // recount
-            totalCount = await Good.countDocuments({ name: { $regex: regExp, $options: 'ims' } });
-            totalPages = Math.ceil(totalCount / pagesize);
-            goods = await Good.find({ name: { $regex: regExp, $options: 'ims' } }).limit(pagesize).skip(skipCount);
-        }
-
         let resultData = {};
-        resultData.totalCount = totalCount;
-        resultData.totalPages = totalPages;
         resultData.pagenum = pagenum;
-        resultData.goods = goods;
-        res.sendResult(resultData, 200, 'get goods list successfully');
+
+        if (cid) {
+            // check if this category id exists
+            Category.findOne({ _id: cid }, async function(err, result) {
+                if (err || !result) return res.sendResult(null, 400, 'this cid does not exist');
+                // query goods by category
+                let clevel = result.cate_level;
+                if (clevel == 0) {
+                    totalCount = await Good.countDocuments({ cate_one_id: cid });
+                    goods = await Good.find({ cate_one_id: cid }).limit(pagesize).skip(skipCount).sort({ price: 1 });
+                } else if (clevel == 1) {
+                    totalCount = await Good.countDocuments({ cate_two_id: cid });
+                    goods = await Good.find({ cate_two_id: cid }).limit(pagesize).skip(skipCount).sort({ price: 1 });
+                } else {
+                    totalCount = await Good.countDocuments({ cate_three_id: cid });
+                    goods = await Good.find({ cate_three_id: cid }).limit(pagesize).skip(skipCount).sort({ price: 1 });
+                }
+                resultData.totalCount = totalCount;
+                resultData.totalPages = Math.ceil(totalCount / pagesize);
+                resultData.goods = goods;
+                res.sendResult(resultData, 200, 'get goods list successfully');
+            });
+        } else {
+            // query goods by key words
+            let key = req.query.query.trim();
+            if (!key) {
+                totalCount = await Good.countDocuments({});
+                goods = await Good.find({}).limit(pagesize).skip(skipCount);
+            } else {
+                let keyArr = key.split(/\s+/);
+                let regExp = '^';
+                keyArr.forEach(el => {
+                    regExp += '(?=.*' + el + ')';
+                });
+                totalCount = await Good.countDocuments({ name: { $regex: regExp, $options: 'ims' } });
+                goods = await Good.find({ name: { $regex: regExp, $options: 'ims' } }).limit(pagesize).skip(skipCount);
+            }
+            resultData.totalCount = totalCount;
+            resultData.totalPages = Math.ceil(totalCount / pagesize);
+            resultData.goods = goods;
+            res.sendResult(resultData, 200, 'get goods list successfully');
+        }
     })
     .post((req, res) => {
         auth(req, res, ['admin']);

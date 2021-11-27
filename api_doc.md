@@ -676,6 +676,7 @@
 | params   | illustrations     | notes        |
 | -------- | ----------------- | ------------ |
 | query    | key words         | not required |
+| cid      | id of category    | not required |
 | pagenum  | current page      | required     |
 | pagesize | page size         | required     |
 
