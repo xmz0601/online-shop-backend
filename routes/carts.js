@@ -60,6 +60,31 @@ router.route('/:uid/goods/:gid')
             await result.save();
             res.sendResult(result, 200, 'edit number of goods successfully');
         });
+    })
+    .delete((req, res) => {
+        auth(req, res, ['normal']);
+        let { uid, gid } = req.params;
+        // verify params
+        Customer.findOne({ _id: uid }, async function(err, result) {
+            if (err || !result) return res.sendResult(null, 400, 'this uid does not exist');
+            // check if this goods is in the cart
+            let inCart = false;
+            result.cart.forEach((item) => {
+                if (item.goodsId == gid) {
+                    inCart = true;
+                    return;
+                }
+            });
+            // not found
+            if (!inCart) return res.sendResult(null, 400, 'this gid does not exist in cart');
+            // delete
+            await Customer.updateOne({ _id: uid }, {
+                $pull: {
+                    cart: { goodsId: gid }
+                }
+            });
+            res.sendResult(null, 200, 'delete goods successfully');
+        });
     });
 
 

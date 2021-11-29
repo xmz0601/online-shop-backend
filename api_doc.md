@@ -868,7 +868,7 @@
 
 # 8. cart management
 
-## 8.1. add goods
+## 8.1. add goods to cart
 
 - path: carts/:uid/goods/:gid
 - method: post
@@ -909,7 +909,7 @@
 }
 ```
 
-## 8.2. edit number of goods
+## 8.2. edit number of goods in cart
 
 - path: carts/:uid/goods/:gid
 - method: put
@@ -946,6 +946,29 @@
     },
     "meta": {
         "msg": "edit number of goods successfully",
+        "status": 200
+    }
+}
+```
+
+## 8.3. delete goods in cart
+
+- path: carts/:uid/goods/:gid
+- method: delete
+- params:
+
+| params   | illustrations     | notes        |
+| -------- | ----------------- | ------------ |
+| uid      | id of user        | required     |
+| gid      | id of goods       | required     |
+
+- response data:
+
+```json
+{
+    "data": null,
+    "meta": {
+        "msg": "delete goods successfully",
         "status": 200
     }
 }
