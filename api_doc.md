@@ -863,3 +863,113 @@
     }
 }
 ```
+
+------
+
+# 8. cart management
+
+## 8.1. add goods to cart
+
+- path: carts/:uid/goods/:gid
+- method: post
+- params:
+
+| params   | illustrations     | notes        |
+| -------- | ----------------- | ------------ |
+| uid      | id of user        | required     |
+| gid      | id of goods       | required     |
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "618e9ddf1b3c583d534fef73",
+        "role": "normal",
+        "state": 0,
+        "username": "rob",
+        "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
+        "email": "rob@gmail.com",
+        "post_code": "CB3 1AA",
+        "address": "12 Oxford Road",
+        "town_city": "Cambridge",
+        "create_time": "2021-11-12T17:01:19.706Z",
+        "cart": [
+            {
+                "_id": "61a3bf6943cb125c58e75691",
+                "goodsId": "619d7337631410402ed2befc",
+                "goodsNum": 1
+            }
+        ]
+    },
+    "meta": {
+        "msg": "add goods to cart successfully",
+        "status": 201
+    }
+}
+```
+
+## 8.2. edit number of goods in cart
+
+- path: carts/:uid/goods/:gid
+- method: put
+- params:
+
+| params   | illustrations     | notes        |
+| -------- | ----------------- | ------------ |
+| uid      | id of user        | required     |
+| gid      | id of goods       | required     |
+| num      | number of goods   | required; must be a positive number and added in request body|
+
+- response data:
+
+```json
+{
+    "data": {
+        "_id": "618e9ddf1b3c583d534fef73",
+        "role": "normal",
+        "state": 0,
+        "username": "rob",
+        "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
+        "email": "rob@gmail.com",
+        "post_code": "CB3 1AA",
+        "address": "12 Oxford Road",
+        "town_city": "Cambridge",
+        "create_time": "2021-11-12T17:01:19.706Z",
+        "cart": [
+            {
+                "_id": "61a3bf6943cb125c58e75691",
+                "goodsId": "619d7337631410402ed2befc",
+                "goodsNum": 10
+            }
+        ]
+    },
+    "meta": {
+        "msg": "edit number of goods successfully",
+        "status": 200
+    }
+}
+```
+
+## 8.3. delete goods in cart
+
+- path: carts/:uid/goods/:gid
+- method: delete
+- params:
+
+| params   | illustrations     | notes        |
+| -------- | ----------------- | ------------ |
+| uid      | id of user        | required     |
+| gid      | id of goods       | required     |
+
+- response data:
+
+```json
+{
+    "data": null,
+    "meta": {
+        "msg": "delete goods successfully",
+        "status": 200
+    }
+}
+```

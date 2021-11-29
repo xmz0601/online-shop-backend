@@ -50,12 +50,11 @@ const customerSchema = new mongoose.Schema({
         default: Date.now
     },
     cart: [{
-        productId: {
+        goodsId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product'
+            ref: 'Good'
         },
-        productNum: Number,
-        isChecked: Boolean
+        goodsNum: Number,
     }]
 });
 
