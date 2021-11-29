@@ -45,6 +45,7 @@ app.use('/menus', require('./routes/menus'));
 app.use('/categories', require('./routes/categories'));
 app.use('/upload', require('./routes/upload'));
 app.use('/goods', require('./routes/goods'));
+app.use('/carts', require('./routes/carts'));
 
 
 app.listen(3000, () => {
