@@ -35,6 +35,31 @@ router.route('/:uid/goods/:gid')
                 res.sendResult(cresult, 201, 'add goods to cart successfully');
             });
         });
+    })
+    // change number of goods in cart
+    .put((req, res) => {
+        auth(req, res, ['normal']);
+        let { uid, gid } = req.params;
+        let { num } = req.body;
+        // verify params
+        if (!num || num <= 0) return res.sendResult(null, 400, "wrong param: num");
+        num = parseInt(num);
+        Customer.findOne({ _id: uid }, async function(err, result) {
+            if (err || !result) return res.sendResult(null, 400, 'this uid does not exist');
+            // check if this goods is in the cart
+            let inCart = false;
+            result.cart.forEach((item) => {
+                if (item.goodsId == gid) {
+                    inCart = true;
+                    item.goodsNum = num;
+                    return;
+                }
+            });
+            // not found
+            if (!inCart) return res.sendResult(null, 400, 'this gid does not exist in cart');
+            await result.save();
+            res.sendResult(result, 200, 'edit number of goods successfully');
+        });
     });
 
 
