@@ -6,10 +6,12 @@ const router = express.Router();
 router.route('/')
     // get menu list
     .get((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         const menuList = [{
             id: 100,
-            authName: 'User Management',
+            authName: 'User',
             path: 'users',
             children: [{
                     id: 101,
@@ -26,31 +28,31 @@ router.route('/')
             ]
         }, {
             id: 200,
-            authName: 'Goods Management',
-            path: 'goods',
-            children: [{
-                id: 201,
-                authName: 'Goods List',
-                path: 'goods',
-                children: []
-            }]
-        }, {
-            id: 300,
-            authName: 'Category Management',
+            authName: 'Category',
             path: 'categories',
             children: [{
-                id: 301,
+                id: 201,
                 authName: 'Category List',
                 path: 'categories',
                 children: []
             }]
         }, {
+            id: 300,
+            authName: 'Goods',
+            path: 'goods',
+            children: [{
+                id: 301,
+                authName: 'Goods List',
+                path: 'goods',
+                children: []
+            }]
+        }, {
             id: 400,
-            authName: 'Data Management',
+            authName: 'Data',
             path: 'data',
             children: [{
                 id: 401,
-                authName: 'Statistical Report',
+                authName: 'Data Report',
                 path: 'reports',
                 children: []
             }]

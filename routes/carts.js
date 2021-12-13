@@ -2,13 +2,16 @@ const express = require('express');
 const { Good } = require('../models/good');
 const { Customer } = require('../models/customer');
 const auth = require('../modules/authorization');
+const mongoose = require('mongoose');
 
 const router = express.Router();
 
 router.route('/:uid/goods/:gid')
     // add goods to cart
     .post((req, res) => {
-        auth(req, res, ['normal']);
+        const continueFlag = auth(req, res, ['normal']);
+        if (continueFlag != 'ok') return;
+
         let { uid, gid } = req.params;
         // verify params
         Customer.findOne({ _id: uid }, function(cerr, cresult) {
@@ -32,13 +35,67 @@ router.route('/:uid/goods/:gid')
                     cresult.cart.push(newGoods);
                 }
                 await cresult.save();
-                res.sendResult(cresult, 201, 'add goods to cart successfully');
+                // look up goods
+                const detailedUser = await Customer.aggregate([{
+                        $unwind: {
+                            path: '$cart'
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'goods',
+                            localField: 'cart.goodsId',
+                            foreignField: '_id',
+                            as: 'cart.cart_item'
+                        }
+                    },
+                    {
+                        $unwind: {
+                            path: '$cart.cart_item'
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: '$_id',
+                            cart: {
+                                $push: '$cart'
+                            }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'customers',
+                            localField: '_id',
+                            foreignField: '_id',
+                            as: 'custmDetails'
+                        }
+                    },
+                    {
+                        $unwind: {
+                            path: '$custmDetails'
+                        }
+                    },
+                    {
+                        $addFields: {
+                            'custmDetails.cart': '$cart'
+                        }
+                    },
+                    {
+                        $replaceRoot: {
+                            newRoot: '$custmDetails'
+                        }
+                    },
+                    { $match: { _id: mongoose.Types.ObjectId(uid) } }
+                ]);
+                res.sendResult(detailedUser[0], 201, 'add goods to cart successfully');
             });
         });
     })
     // change number of goods in cart
     .put((req, res) => {
-        auth(req, res, ['normal']);
+        const continueFlag = auth(req, res, ['normal']);
+        if (continueFlag != 'ok') return;
+
         let { uid, gid } = req.params;
         let { num } = req.body;
         // verify params
@@ -58,11 +115,65 @@ router.route('/:uid/goods/:gid')
             // not found
             if (!inCart) return res.sendResult(null, 400, 'this gid does not exist in cart');
             await result.save();
-            res.sendResult(result, 200, 'edit number of goods successfully');
+            // look up goods
+            const detailedUser = await Customer.aggregate([{
+                    $unwind: {
+                        path: '$cart'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'goods',
+                        localField: 'cart.goodsId',
+                        foreignField: '_id',
+                        as: 'cart.cart_item'
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$cart.cart_item'
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        cart: {
+                            $push: '$cart'
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'customers',
+                        localField: '_id',
+                        foreignField: '_id',
+                        as: 'custmDetails'
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$custmDetails'
+                    }
+                },
+                {
+                    $addFields: {
+                        'custmDetails.cart': '$cart'
+                    }
+                },
+                {
+                    $replaceRoot: {
+                        newRoot: '$custmDetails'
+                    }
+                },
+                { $match: { _id: mongoose.Types.ObjectId(uid) } }
+            ]);
+            res.sendResult(detailedUser[0], 200, 'edit number of goods successfully');
         });
     })
     .delete((req, res) => {
-        auth(req, res, ['normal']);
+        const continueFlag = auth(req, res, ['normal']);
+        if (continueFlag != 'ok') return;
+
         let { uid, gid } = req.params;
         // verify params
         Customer.findOne({ _id: uid }, async function(err, result) {
@@ -83,7 +194,64 @@ router.route('/:uid/goods/:gid')
                     cart: { goodsId: gid }
                 }
             });
-            res.sendResult(null, 200, 'delete goods successfully');
+            // prepare return data
+            let user = await Customer.findOne({ _id: uid }).lean();
+            if (user.cart.length > 0) {
+                // look up goods
+                const detailedUser = await Customer.aggregate([{
+                        $unwind: {
+                            path: '$cart'
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'goods',
+                            localField: 'cart.goodsId',
+                            foreignField: '_id',
+                            as: 'cart.cart_item'
+                        }
+                    },
+                    {
+                        $unwind: {
+                            path: '$cart.cart_item'
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: '$_id',
+                            cart: {
+                                $push: '$cart'
+                            }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'customers',
+                            localField: '_id',
+                            foreignField: '_id',
+                            as: 'custmDetails'
+                        }
+                    },
+                    {
+                        $unwind: {
+                            path: '$custmDetails'
+                        }
+                    },
+                    {
+                        $addFields: {
+                            'custmDetails.cart': '$cart'
+                        }
+                    },
+                    {
+                        $replaceRoot: {
+                            newRoot: '$custmDetails'
+                        }
+                    },
+                    { $match: { _id: mongoose.Types.ObjectId(uid) } }
+                ]);
+                user.cart = detailedUser[0].cart;
+            }
+            res.sendResult(user, 200, 'delete goods successfully');
         });
     });
 

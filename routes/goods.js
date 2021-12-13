@@ -64,7 +64,9 @@ router.route('/')
         }
     })
     .post((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         // verify params
         const { error } = validateGoods(req.body);
         if (error) return res.sendResult(null, 400, error.message);
@@ -108,7 +110,9 @@ router.route('/:id')
         });
     })
     .put((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         // verify params
         const { error } = putGoodsValidate(req.body);
         if (error) return res.sendResult(null, 400, error.message);
@@ -124,7 +128,9 @@ router.route('/:id')
         });
     })
     .delete((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         let { id } = req.params;
         Good.findOne({ _id: id }, async function(err, result) {
             if (err || !result) return res.sendResult(null, 400, 'this id does not exist');

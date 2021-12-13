@@ -9,9 +9,6 @@ router.route('/')
     // get cate list
     .get(async(req, res) => {
         // verify params
-        if (!req.query.pagenum || req.query.pagenum <= 0) return res.sendResult(null, 400, "wrong param: pagenum");
-        if (!req.query.pagesize || req.query.pagesize <= 0) return res.sendResult(null, 400, "wrong param: pagesize");
-
         let level = '';
         if (!req.query.level) {
             level = '3';
@@ -21,41 +18,58 @@ router.route('/')
             level = req.query.level;
         }
 
-        let pagenum = parseInt(req.query.pagenum);
-        let pagesize = parseInt(req.query.pagesize);
-        let totalCount = await Category.countDocuments({ cate_pid: '0' });
-        let totalPages = Math.ceil(totalCount / pagesize);
-        let skipCount = (pagenum - 1) * pagesize;
-
-        // get tier 1 category
-        let cates = await Category.find({ cate_pid: '0' }).limit(pagesize).skip(skipCount).lean();
-        if (level > 1) {
-            for (let i = 0; i < cates.length; i++) {
-                cates[i].children = await Category.find({ cate_pid: cates[i]._id }).lean();
-
-                if (level > 2) {
-                    for (let j = 0; j < cates[i].children.length; j++) {
-                        cates[i].children[j].children = await Category.find({ cate_pid: cates[i].children[j]._id }).lean();
+        let pagenum = req.query.pagenum;
+        let pagesize = req.query.pagesize;
+        if (!pagenum && !pagesize) {
+            // get all categories
+            // get tier 1 category
+            let cates = await Category.find({ cate_pid: '0' }).lean();
+            if (level > 1) {
+                for (let i = 0; i < cates.length; i++) {
+                    cates[i].children = await Category.find({ cate_pid: cates[i]._id }).lean();
+                    if (level > 2) {
+                        for (let j = 0; j < cates[i].children.length; j++) {
+                            cates[i].children[j].children = await Category.find({ cate_pid: cates[i].children[j]._id }).lean();
+                        }
                     }
                 }
             }
+            return res.sendResult(cates, 200, 'get category list successfully');
+        } else if (pagenum && pagenum > 0 && pagesize && pagesize > 0) {
+            // get part of categories
+            pagenum = parseInt(pagenum);
+            pagesize = parseInt(pagesize);
+            let totalCount = await Category.countDocuments({ cate_pid: '0' });
+            let skipCount = (pagenum - 1) * pagesize;
+            // get tier 1 category
+            let cates = await Category.find({ cate_pid: '0' }).limit(pagesize).skip(skipCount).lean();
+            if (level > 1) {
+                for (let i = 0; i < cates.length; i++) {
+                    cates[i].children = await Category.find({ cate_pid: cates[i]._id }).lean();
+                    if (level > 2) {
+                        for (let j = 0; j < cates[i].children.length; j++) {
+                            cates[i].children[j].children = await Category.find({ cate_pid: cates[i].children[j]._id }).lean();
+                        }
+                    }
+                }
+            }
+
+            let resultData = {};
+            resultData.totalCount = totalCount;
+            resultData.pagenum = pagenum;
+            resultData.cates = cates;
+            return res.sendResult(resultData, 200, 'get category list successfully');
         }
-
-        let resultData = {};
-        resultData.totalCount = totalCount;
-        resultData.totalPages = totalPages;
-        resultData.pagenum = pagenum;
-        resultData.cates = cates;
-
-        res.sendResult(resultData, 200, 'get category list successfully');
+        res.sendResult(null, 400, "wrong param: pagenum or pagesize");
     })
     .post(async(req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
 
         let cate_pid = req.body.cate_pid + '';
         let cate_name = req.body.cate_name;
         let cate_level = req.body.cate_level + '';
-        // varify params
+        // verify params
         if (!cate_pid.trim()) return res.sendResult(null, 400, 'cate_pid is required');
         if (!cate_name.trim()) return res.sendResult(null, 400, 'cate_name is required');
         if (!cate_level.trim()) return res.sendResult(null, 400, 'cate_level is required');
@@ -94,9 +108,11 @@ router.route('/:id')
         });
     })
     .put((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         let id = req.params.id;
-        // varify params
+        // verify params
         if (!req.body.cate_name.trim()) return res.sendResult(null, 400, 'cate_name is required');
         // check if this id exists
         Category.findOne({ _id: id }, async function(err, result) {
@@ -108,7 +124,9 @@ router.route('/:id')
         });
     })
     .delete((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         let { id } = req.params;
         Category.findOne({ _id: id }, async function(err, result) {
             if (err || !result) return res.sendResult(null, 400, 'this id does not exist');
