@@ -1,11 +1,25 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, roles) => {
+    let continueFlag = 'not ok';
     let token = req.headers.authorization;
-    if (!token) return res.sendResult(null, 401, 'token is missing');
-
-    jwt.verify(token, 'secretkey', function(err, decoded) {
-        if (err) return res.sendResult(null, 401, 'invalid token');
-        if (!roles.includes(decoded.role)) return res.sendResult(null, 403, 'forbidden request');
-    });
+    if (!token) {
+        res.sendResult(null, 401, 'token is missing');
+        return continueFlag;
+    }
+    let decoded = {};
+    try {
+        decoded = jwt.verify(token, 'secretkey');
+    } catch (err) {
+        // err
+        res.sendResult(null, 401, 'invalid token');
+        return continueFlag;
+    } finally {
+        if (decoded.role && roles.includes(decoded.role)) {
+            continueFlag = 'ok';
+        } else {
+            res.sendResult(null, 403, 'forbidden request');
+        }
+        return continueFlag;
+    }
 };

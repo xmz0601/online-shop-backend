@@ -19,7 +19,7 @@
 
 ## 1.2. illustration of general status code
 
-| *code* | *meaning*                |
+| *code*   | *meaning*             |
 | -------- | --------------------- |
 | 200      | OK                    |
 | 201      | CREATED               |
@@ -211,7 +211,8 @@
         "town_city": "Cambridge",
         "create_time": "2021-11-12T17:01:19.706Z",
         "cart": [],
-        "__v": 0
+        "__v": 0,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MzY4NDY1MzksImV4cCI6MTYzNjkzMjkzOX0.Imiw8LJMMTKcfICckq-xUUG6AYdXylx-BjjyLI3tKXE"
     },
     "meta": {
         "msg": "create user successfully",
@@ -444,7 +445,7 @@
     "data": [
         {
             "id": 100,
-            "authName": "User Management",
+            "authName": "User",
             "path": "users",
             "children": [{
                     "id": 101,
@@ -474,15 +475,14 @@
 
 | params   | illustrations     | notes                                 |
 | -------- | ----------------- | ------------------------------------- |
-| level    | 1/2/3             | 1/2/3 means get tier 1/2/3 categories; if this param is missing, then a default value 3 will be added                                          |
-| pagenum  | current page      | required                              |
-| pagesize | page size         | required                              |
+| level    | 1/2/3             | not required; 1/2/3 means get tier 1/2/3 categories; if this param is missing, then a default value 3 will be added                          |
+| pagenum  | current page      | not required; if this param is missing, then get all categories       |
+| pagesize | page size         | not required; if this param is missing, then get all categories       |
 
 - response params:
 
 | params     | illustrations                |
 | ---------- | ---------------------------- |
-| totalPages | total number of pages        |
 | totalCount | total number of categories   |
 | pagenum    | current page                 |
 | cates      | array of categories          |
@@ -494,7 +494,6 @@
     "data": {
         "pagenum": 1,
         "totalCount": 6,
-        "totalPages": 2,
         "cates": [
             {
                 "_id": "61967cd89ef90810b61838e4",
@@ -897,8 +896,22 @@
         "cart": [
             {
                 "_id": "61a3bf6943cb125c58e75691",
-                "goodsId": "619d7337631410402ed2befc",
-                "goodsNum": 1
+                "goodsId": "619d747c2cfb9341e39d0d3e",
+                "goodsNum": 1,
+                "cart_item": {
+                    "_id": "619d747c2cfb9341e39d0d3e",
+                    "name": "Kellogg's Crunchy Nut Corn Flakes",
+                    "cate_one_id": "61967cbf8414d8108c52ba32",
+                    "cate_two_id": "619683d96cb3b619e476b8b4",
+                    "cate_three_id": "619694214b23b13042de1105",
+                    "create_time": "2021-11-23T23:08:44.215Z",
+                    "price": 3,
+                    "weight": 500,
+                    "storage": "",
+                    "description": "",
+                    "ingredients": "",
+                    "pic": "/uploads/320342a02ab7cb5c247979a01.jpeg"
+                }
             }
         ]
     },
@@ -939,8 +952,22 @@
         "cart": [
             {
                 "_id": "61a3bf6943cb125c58e75691",
-                "goodsId": "619d7337631410402ed2befc",
-                "goodsNum": 10
+                "goodsId": "619d747c2cfb9341e39d0d3e",
+                "goodsNum": 1,
+                "cart_item": {
+                    "_id": "619d747c2cfb9341e39d0d3e",
+                    "name": "Kellogg's Crunchy Nut Corn Flakes",
+                    "cate_one_id": "61967cbf8414d8108c52ba32",
+                    "cate_two_id": "619683d96cb3b619e476b8b4",
+                    "cate_three_id": "619694214b23b13042de1105",
+                    "create_time": "2021-11-23T23:08:44.215Z",
+                    "price": 3,
+                    "weight": 500,
+                    "storage": "",
+                    "description": "",
+                    "ingredients": "",
+                    "pic": "/uploads/320342a02ab7cb5c247979a01.jpeg"
+                }
             }
         ]
     },
@@ -966,7 +993,19 @@
 
 ```json
 {
-    "data": null,
+    "data": {
+        "_id": "618e9ddf1b3c583d534fef73",
+        "role": "normal",
+        "state": 0,
+        "username": "rob",
+        "password": "$2b$10$9wvH.lpwwmNDwNxdyqj3VebnvcDdZAQpjb.FQDEoNlCYO1Rn2SvP.",
+        "email": "rob@gmail.com",
+        "post_code": "CB3 1AA",
+        "address": "12 Oxford Road",
+        "town_city": "Cambridge",
+        "create_time": "2021-11-12T17:01:19.706Z",
+        "cart": []
+    },
     "meta": {
         "msg": "delete goods successfully",
         "status": 200

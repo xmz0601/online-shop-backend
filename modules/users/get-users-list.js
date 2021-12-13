@@ -6,7 +6,6 @@ module.exports = async(req, res, model) => {
     let pagenum = parseInt(req.query.pagenum);
     let pagesize = parseInt(req.query.pagesize);
     let totalCount = await model.countDocuments({});
-    let totalPages = Math.ceil(totalCount / pagesize);
     let skipCount = (pagenum - 1) * pagesize;
 
     let users = [];
@@ -19,12 +18,14 @@ module.exports = async(req, res, model) => {
         keyArr.forEach(el => {
             regExp += '(?=.*' + el + ')';
         });
+        // recount
+        totalCount = await model.countDocuments({ username: { $regex: regExp, $options: 'ims' } });
         users = await model.find({ username: { $regex: regExp, $options: 'ims' } }).limit(pagesize).skip(skipCount);
     }
 
     let resultData = {};
     resultData.totalCount = totalCount;
-    resultData.totalPages = totalPages;
+    resultData.totalPages = Math.ceil(totalCount / pagesize);
     resultData.pagenum = pagenum;
     resultData.users = users;
 

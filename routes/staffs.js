@@ -13,13 +13,17 @@ const router = express.Router();
 router.route('/')
     // get staffs list
     .get((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         getUserList(req, res, Staff);
     })
     // add new staff
     .post((req, res) => {
-        auth(req, res, ['admin']);
-        // varify params
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
+        // verify params
         const { error } = validateStaff(req.body);
         if (error) return res.sendResult(null, 400, error.message);
         addUser(req, res, Staff);
@@ -29,25 +33,33 @@ router.route('/')
 router.route('/:id/state/:state')
     // change state of staff
     .put((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         changeState(req, res, Staff);
     });
 
 
 router.route('/:id')
     .get((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         queryUser(req, res, Staff);
     })
     .put((req, res) => {
-        auth(req, res, ['admin']);
-        // varify params
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
+        // verify params
         const { error } = putStaffValidate(req.body);
         if (error) return res.sendResult(null, 400, error.message);
         editUser(req, res, Staff);
     })
     .delete((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         deleteUser(req, res, Staff);
     });
 

@@ -8,7 +8,9 @@ const router = express.Router();
 router.route('/')
     // upload files
     .post((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         const options = {
             keepExtensions: true,
             uploadDir: path.join(__dirname, '../', 'uploads')

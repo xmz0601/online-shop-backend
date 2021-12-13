@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.route('/reports/:type')
     .get((req, res) => {
-        auth(req, res, ['admin']);
+        const continueFlag = auth(req, res, ['admin']);
+        if (continueFlag != 'ok') return;
+
         // verify params
         let { type } = req.params;
         if (type != 1) return res.sendResult(null, 400, 'wrong param: type');

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Joi = require('joi');
 
 // set schema
 const cateSchema = new mongoose.Schema({
