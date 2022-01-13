@@ -9,7 +9,7 @@ It has two front-end projects:
 [Repository of shopping mall](https://github.com/xmz0601/react-acodo) (haven't been finished......)
 
 ## Tech Stack
-`Node.js` + `Express` + `MongoDB`+ `jwt`+ `RESTful API`+ `JSON`
+`Node.js` + `Express` + `MongoDB` + `jwt` + `RESTful API` + `JSON`
 
 ## API Document
 [API Document](https://github.com/xmz0601/online-shop-backend/blob/main/api_doc.md)
